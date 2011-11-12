@@ -53,6 +53,25 @@ Below is some simple example of inheritance_module_eval usage:
       end
     end
 
+Requirements
+------------
+none
+
+rspec2 for testing
+
+Compatibility
+-------------
+tested with Ruby
+
+* 1.8.7 # (current default)
+* 1.9.2
+* 1.9.3
+* jruby
+* ruby-head
+* ree
+
+see [build history](http://travis-ci.org/#!/AlexParamonov/inheritance_module_eval/builds)
+
 Copyright
 ---------
 Copyright © 2011 Alexander N Paramonov. See LICENSE for details.

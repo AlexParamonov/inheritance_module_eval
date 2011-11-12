@@ -21,5 +21,6 @@ Allows to redefine dynamic method in the same class or in any child class, and c
 
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec", ">= 2.6"
+  s.add_development_dependency "rake"
   # s.add_runtime_dependency "rest-client"
 end

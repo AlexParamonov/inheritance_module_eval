@@ -8,55 +8,46 @@ class Child < Parent
 
 end
 describe InheritanceModuleEval do
-  describe "integration" do
-    specify "class should respond to instance_module_eval" do
-      Class.new.should respond_to(:instance_module_eval)
-    end
-
-    specify "module should respond to instance_module_eval" do
-      Module.new.should respond_to(:instance_module_eval)
-    end
-
-    specify "class should respond to class_module_eval" do
-      Class.new.should respond_to(:class_module_eval)
-    end
-
-    specify "module should respond to class_module_eval" do
-      Module.new.should respond_to(:class_module_eval)
-    end
-  end
-
   describe "add dynamic methods" do
     before(:each) do
       @test_object = Class.new
     end
 
-    pending "should delegate to module_eval" do
-      Module.should_receive(:module_eval).twice
-      @test_object.instance_module_eval %{
+    it "should delegate to module_eval" do
+      mock_module = mock(:mock_module)
+      @test_object.stub(:include)
+      @test_object.stub(:extend)
+      Module.stub(:new).and_return(mock_module)
+
+      mock_module.should_receive(:module_eval).once
+
+      InheritanceModuleEval.instance_eval_on @test_object do
         def say_hi
           puts hi
         end
-      }
-      @test_object.class_module_eval %{
+      end
+
+      mock_module.should_receive(:module_eval).once
+
+      InheritanceModuleEval.class_eval_on @test_object do
         def say_hi
           puts hi
         end
-      }
+      end
     end
 
     describe "instance methods" do
       it "should eval a string" do
-        @test_object.instance_module_eval %{
-          def say_hi
-            puts 'hi'
-          end
-                                              }
+        InheritanceModuleEval.instance_eval_on @test_object, %{
+                                                                def say_hi
+                                                                  puts 'hi'
+                                                                end
+                                                              }
           @test_object.new.should respond_to :say_hi
 
       end
       it "should eval a block" do
-        @test_object.instance_module_eval do
+        InheritanceModuleEval.instance_eval_on @test_object do
           def say_hi
             puts 'hi'
           end
@@ -67,20 +58,21 @@ describe InheritanceModuleEval do
 
     describe "class_methods" do
       it "should eval a string" do
-        @test_object.class_module_eval %{
-          def say_hi
-            puts 'hi'
-          end
-                                              }
-          @test_object.should respond_to :say_hi
-
-      end
-      it "should eval a block" do
-        @test_object.class_module_eval do
+        InheritanceModuleEval.class_eval_on @test_object do
           def say_hi
             puts 'hi'
           end
         end
+
+        @test_object.should respond_to :say_hi
+      end
+      it "should eval a block" do
+        InheritanceModuleEval.class_eval_on @test_object do
+          def say_hi
+            puts 'hi'
+          end
+        end
+
         @test_object.should respond_to :say_hi
       end
     end
@@ -88,32 +80,35 @@ describe InheritanceModuleEval do
 
     describe "collisions" do
       describe "define already defined method in a class" do
-        describe "redefine it after class declaration" do
+        context "redefine it after class declaration" do
           it "should has lower priority then method, declared in a class" do
             klass = Class.new
             klass.class_eval do
               def say_hi
                 "hi from method" << " " << super
               end
-              instance_module_eval %{
-                def say_hi
-                  "hi from eval"
-                end
-              }
             end
+
+            InheritanceModuleEval.instance_eval_on klass do
+              def say_hi
+                "hi from eval"
+              end
+            end
+
             klass.new.say_hi.should == "hi from method hi from eval"
           end
         end
 
-        describe "redefine it before class declaration" do
-          it "should push dynamic method up in the inheritance tree" do
+        context "redefine it before class declaration" do
+          it "should has lower priority then method, declared in a class" do
             klass = Class.new
             klass.class_eval do
-              instance_module_eval %{
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   "tiny hi"
                 end
-              }
+              end
+
               def say_hi
                 super.upcase
               end
@@ -126,26 +121,30 @@ describe InheritanceModuleEval do
           it "should push dynamic method up in the inheritance tree" do
             klass = Class.new
             klass.class_eval do
-              instance_module_eval %{
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   [5]
                 end
-              }
-              instance_module_eval %{
+              end
+
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   [4] + super
                 end
-              }
-              instance_module_eval %{
+              end
+
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   [3] + super
                 end
-              }
-              instance_module_eval %{
+              end
+
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   [2] + super
                 end
-              }
+              end
+
               def say_hi
                 [1] + super
               end
@@ -166,7 +165,7 @@ describe InheritanceModuleEval do
             klass = Class.new
             klass.class_eval do
               include test_module
-              instance_module_eval do
+              InheritanceModuleEval.instance_eval_on self do
                 def say_hi
                   ["hi from eval"] + super
                 end
@@ -185,7 +184,7 @@ describe InheritanceModuleEval do
 
     describe "#get_module_for" do
       it "should return Module" do
-        InheritanceModuleEval.send :get_module_for, "puts('hi')"
+        InheritanceModuleEval.send :get_module_for, "'hi'"
       end
 
       it "should raise ArgumentError if no code given" do

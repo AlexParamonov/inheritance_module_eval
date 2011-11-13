@@ -9,30 +9,38 @@ Installation
 
 Usage
 -----
-There are 2 methods:
+Inheritance module_eval provides 2 methods for eval instance and class methods:
 
-* instance_module_eval
-* class_module_eval
+* instance_eval_on
+* class_eval_on
 
-instance_module_eval method used to eval instance methods (ie: methods of an object)
 
-class_module_eval method used to eval class methods (ie: methods of an class)
+    InheritanceModuleEval.instance_eval_on(instance_object, code = nil, &block) #method used to eval instance methods (ie: methods of an object)
+    InheritanceModuleEval.class_eval_on(class_object, code = nil, &block)       #method used to eval class methods (ie: methods of an class)
 
+Note: you may include
+
+    require "inheritance_module_eval/integration"
+to intergate inheritance_module_eval in ruby core. That will give 2 methods:
+
+* instance_module_eval(code = nil, &block)
+* class_module_eval(code = nil, &block)
 
 Below is some simple example of inheritance_module_eval usage:
 
     require 'inheritance_module_eval'
+    require "inheritance_module_eval/integration"
 
     # Some dummy class that uses #instance_module_eval
     class Content
       self.field(name)
         instance_module_eval %{
           def #{name}
-            instance_valiable_get(@#{name})
+            @#{name}
           end
 
           def #{name}=(new_value)
-            instance_valiable_set(@#{name}, new_value)
+            @#{name}= new_value
           end
         }
         end
@@ -63,7 +71,7 @@ Compatibility
 -------------
 tested with Ruby
 
-* 1.8.7 # (current default)
+* 1.8.7
 * 1.9.2
 * 1.9.3
 * jruby

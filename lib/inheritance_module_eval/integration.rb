@@ -1,4 +1,4 @@
-require "integration_module_eval"
+require "inheritance_module_eval"
 class Module
   # acts same as module_eval, but saves method hierarchy
   # should be called only for instance methods evaluation

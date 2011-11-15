@@ -1,12 +1,5 @@
 require "inheritance_module_eval"
 
-class Parent
-
-end
-
-class Child < Parent
-
-end
 describe InheritanceModuleEval do
   describe "add dynamic methods" do
     before(:each) do

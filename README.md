@@ -80,6 +80,11 @@ tested with Ruby
 
 see [build history](http://travis-ci.org/#!/AlexParamonov/inheritance_module_eval/builds)
 
+Contributing
+-------------
+see [contributing guide](http://github.com/AlexParamonov/inheritance_module_eval/blob/master/CONTRIBUTING.md)
+
 Copyright
 ---------
-Copyright © 2011 Alexander N Paramonov. See LICENSE for details.
+Copyright © 2011 Alexander N Paramonov.
+Released under the MIT License. See the LICENSE file for further details.

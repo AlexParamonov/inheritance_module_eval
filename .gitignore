@@ -2,12 +2,21 @@
 .bundle
 Gemfile.lock
 pkg/*
-.idea/
+.idea/*
 doc/
-log/*.log
-/tmp/
-tmp/
+log/*
+tmp/*
 db/*.sqlite3
 /coverage
 /coverage.data
 /.yardoc
+.rvmrc
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.swo
+*.md.html

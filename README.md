@@ -1,11 +1,11 @@
 Inheritance module_eval
 =======================
-Inheritance module_eval saves inheritance structure of dynamically created methods.
-Allows to redefine dynamic method in the same class or in any child class, and call original method by super keyword
+Allows to create methods with same name inside particular class/object by pushing them down by inheritance tree.
+So method "field" may call other "field" in same class by calling super keyword instead of just redefine it.
 
 Installation
 ------------
-    gem inheritance_module_eval
+    gem install inheritance_module_eval
 
 Usage
 -----
@@ -33,6 +33,7 @@ Below is some simple example of inheritance_module_eval usage:
 
     # Some dummy class that uses #instance_module_eval
     class Content
+      # defines simple getter and setter
       self.field(name)
         instance_module_eval %{
           def #{name}
@@ -53,8 +54,9 @@ Below is some simple example of inheritance_module_eval usage:
       field :content
       field :etc
 
+      # you desided, that title for article should be titelized
+      # from now you dont need to call alias_method or reimplement method anymore!
       # you can use inheritance!
-      # you dont need to call alias_method anymore!
       # make it simple
       def title
         super.to_s.titelize
@@ -86,5 +88,5 @@ see [contributing guide](http://github.com/AlexParamonov/inheritance_module_eval
 
 Copyright
 ---------
-Copyright © 2011 Alexander N Paramonov.
+Copyright © 2011-2012 Alexander N Paramonov.
 Released under the MIT License. See the LICENSE file for further details.

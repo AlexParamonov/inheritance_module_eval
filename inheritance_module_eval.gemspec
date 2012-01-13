@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.email       = ["alexander.n.paramonov@gmail.com"]
   s.homepage    = "http://github.com/AlexParamonov/inheritance_module_eval"
   s.summary     = %q{inheritance safe module_eval.}
-  s.description = %q{saves inheritance structure of dynamically created methods.
-Allows to redefine dynamic method in the same class or in any child class, and call original method by super keyword}
+  s.description = %q{Allows to create methods with same name inside particular class/object by pushing them down by inheritance tree.
+So method "field" may call other "field" in same class by calling super keyword instead of just redefine it.}
 
   s.rubyforge_project = "inheritance_module_eval"
 

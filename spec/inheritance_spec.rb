@@ -18,25 +18,18 @@ describe InheritanceModuleEval do
       }
     end
 
-    it "should delegate to module_eval" do
-      mock_module = mock(:mock_module)
-      test_class.stub(:include)
-      test_class.stub(:extend)
-      Module.stub(:new).and_return(mock_module)
-
-      mock_module.should_receive(:module_eval).once
-      InheritanceModuleEval.instance_eval_on test_class, &say_hi_block
-
-      mock_module.should_receive(:module_eval).once
-      InheritanceModuleEval.class_eval_on test_class, &say_hi_block
-    end
-
     describe "instance methods" do
+      it "should delegate to module_eval" do
+        test_class.stub(:include)
+        Module.any_instance.should_receive(:module_eval).once
+        InheritanceModuleEval.instance_eval_on test_class, &say_hi_block
+      end
+
       it "should eval a string" do
         InheritanceModuleEval.instance_eval_on test_class, say_hi_string
         test_class.new.should respond_to :say_hi
       end
-      
+
       it "should eval a block" do
         InheritanceModuleEval.instance_eval_on test_class, &say_hi_block
         test_class.new.should respond_to :say_hi
@@ -44,11 +37,18 @@ describe InheritanceModuleEval do
     end
 
     describe "class_methods" do
+      it "should delegate to module_eval" do
+        test_class.stub(:extend)
+
+        Module.any_instance.should_receive(:module_eval).once
+        InheritanceModuleEval.class_eval_on test_class, &say_hi_block
+      end
+
       it "should eval a string" do
         InheritanceModuleEval.class_eval_on test_class, say_hi_string
         test_class.should respond_to :say_hi
       end
-      
+
       it "should eval a block" do
         InheritanceModuleEval.class_eval_on test_class, &say_hi_block
         test_class.should respond_to :say_hi
@@ -144,7 +144,7 @@ describe InheritanceModuleEval do
                 "hi from method" << ", " << super
               end
             end
-            
+
             test_class.new.say_hi.should == "hi from method, hi from eval, hi from module"
           end
         end

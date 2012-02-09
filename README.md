@@ -1,6 +1,9 @@
 Inheritance module_eval
 =======================
-Allows to create methods with same name inside particular class/object by pushing them down by inheritance tree.
+[![Build Status](https://secure.travis-ci.org/AlexParamonov/inheritance_module_eval.png)](http://travis-ci.org/AlexParamonov/inheritance_module_eval)
+[![Gemnasium Build Status](https://gemnasium.com/AlexParamonov/inheritance_module_eval.png)](http://gemnasium.com/AlexParamonov/inheritance_module_eval)  
+
+Allows to create methods with same name inside particular class/object by pushing them down by inheritance tree.  
 So method "field" may call other "field" in same class by calling super keyword instead of just redefine it.
 
 Installation

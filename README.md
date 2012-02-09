@@ -76,7 +76,10 @@ tested with Ruby
 * 1.8.7
 * 1.9.2
 * 1.9.3
-* jruby
+* jruby-19mode
+* jruby-18mode
+* rbx-19mode
+* rbx-18mode
 * ruby-head
 * ree
 
